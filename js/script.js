@@ -54,3 +54,34 @@ themeSelect.addEventListener('change', (event) => {
         colorSelect.querySelector(`option[value=${theme2Options[0]}]`).selected = true;
     }
 });
+
+const activitiesField = document.querySelector('.activities');
+const totalAmount = document.createElement('span');
+totalAmount.id = 'total';
+totalAmount.textContent = '$0';
+totalAmount.dataset.value = 0;
+activitiesField.appendChild(totalAmount);
+
+
+activitiesField.addEventListener('click', (event) => {
+    function calcTotal(sum1,sum2,operator) {
+        let total = 0;
+        if (operator === '+') {
+             total = parseInt(sum1) + parseInt(sum2);
+        } else {
+             total = parseInt(sum1) - parseInt(sum2);
+        }
+        totalAmount.textContent = `$${total}`;
+        totalAmount.dataset.value = total;
+    }
+
+    if (event.target.type === "checkbox") {
+        let operator;
+        if (event.target.checked === true) {
+            operator = '+'
+        } else {
+            operator = '-'
+        }
+        calcTotal(totalAmount.dataset.value, event.target.dataset.cost, operator);
+    }
+});
