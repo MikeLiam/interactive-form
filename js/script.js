@@ -56,6 +56,7 @@ themeSelect.addEventListener('change', (event) => {
 });
 
 const activitiesField = document.querySelector('.activities');
+const activities = activitiesField.querySelectorAll('input');
 const totalAmount = document.createElement('span');
 totalAmount.id = 'total';
 totalAmount.textContent = '$0';
@@ -74,13 +75,23 @@ activitiesField.addEventListener('click', (event) => {
         totalAmount.textContent = `$${total}`;
         totalAmount.dataset.value = total;
     }
+    function toggleOffOnActivities(activity,option) {
+        for (let i = 0; i < activities.length; i++) {
+            if (activities[i].dataset.dayAndTime === activity.dataset.dayAndTime && activities[i] !== activity) {
+                    activities[i].disabled = option;
+            }
+        }
+    }
 
     if (event.target.type === "checkbox") {
         let operator;
+
         if (event.target.checked === true) {
             operator = '+'
+            toggleOffOnActivities(event.target, true);
         } else {
-            operator = '-'
+            operator = '-';
+            toggleOffOnActivities(event.target, false);
         }
         calcTotal(totalAmount.dataset.value, event.target.dataset.cost, operator);
     }
