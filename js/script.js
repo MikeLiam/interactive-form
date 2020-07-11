@@ -66,7 +66,7 @@ totalAmount.dataset.value = 0;
 activitiesField.appendChild(totalAmount);
 
 
-activitiesField.addEventListener('click', (event) => {
+activitiesField.addEventListener('change', (event) => {
     function calcTotal(sum1,sum2,operator) {
         let total = 0;
         if (operator === '+') {
@@ -129,3 +129,46 @@ function selectPayment(payment){
 paymentSelect.addEventListener('change', (event) => {
     selectPayment(event.target.value);
 });
+
+
+
+const nameInput = document.querySelector('input#name');
+const emailInput = document.querySelector('input#mail');
+const creditNumber = document.querySelector('input#cc-num');
+const creditZip = document.querySelector('input#zip');
+const creditCvv = document.querySelector('input#cvv');
+
+function showOrHideTip(show, element) {
+    if (show) {
+        element.style.display = 'inherit';
+    } else {
+        element.style.display = 'none';
+    }
+}
+
+function validation(tester, forTest) {
+    return tester.test(forTest);
+}
+
+
+function createListener(tester, reference) {
+    return event => {
+        let input;
+        if (event.target === activities) {
+            input = activities.querySelector('#total').dataset.value;
+        } else {
+            input = event.target.value;
+        }
+        const valid = tester(reference, input);
+        const showTip = input != '' && valid;
+        const toolTip = event.target.nextElementSibling;
+        showOrHideTip(showTip, toolTip);
+    };
+}
+
+nameInput.addEventListener('input', createListener(validation, /^[a-z]{1,}$/i));
+emailInput.addEventListener('input', createListener(validation, /^[^@]+\@[^@]+(\.[a-z]{3})?\.[a-z]{3}?$/i));
+creditNumber.addEventListener('input', createListener(validation, /^\d{13,16}$/));
+creditZip.addEventListener('input', createListener(validation, /^\d{5}$/));
+creditCvv.addEventListener('input', createListener(validation, /^\d{3}$/));
+activities.addEventListener('input', createListener(validation, /^\$\d{1,}$/));
