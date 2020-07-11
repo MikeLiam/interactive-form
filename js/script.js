@@ -27,29 +27,32 @@ colorInfo.textContent = "Please select a T-shirt theme.";
 colorSelect.parentNode.appendChild(colorInfo);
 
 const themeSelect = document.querySelector('#design');
-themeSelect.querySelector('option').hidden = true;
+themeSelect.firstElementChild.disabled = true;
+const colorOptions = [...colorSelect.querySelectorAll('option')];
+
 
 themeSelect.addEventListener('change', (event) => {
     function selectPackColor(list, theme) {
-        for (let i = 0; i < list.length; i++) {
+        while (colorSelect.firstElementChild){
+            colorSelect.removeChild(colorSelect.firstElementChild);
+        }
+        for(let i = 0; i < list.length; i++){
             for (let j = 0; j < theme.length; j++) {
                 if (list[i].value === theme[j]) {
-                    list[i].hidden = false;
+                    colorSelect.appendChild(list[i]);
                     break;
-                } else {
-                    list[i].hidden = true;
-                }
+                } 
             }
         }
-
     }
 
     colorInfo.style.display = 'none';
     colorSelect.style.display = 'inherit';
     colorSelect.previousElementSibling.style.visibility = 'visible';
-    const colorOptions = colorSelect.querySelectorAll('option');
+
     const theme1Options = ["cornflowerblue", "darkslategrey", "gold"];
     const theme2Options = ["tomato", "steelblue", "dimgrey"];
+
     if (event.target.value === "js puns") {
         selectPackColor(colorOptions, theme1Options);
         colorSelect.querySelector(`option[value=${theme1Options[0]}]`).selected = true;
