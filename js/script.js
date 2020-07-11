@@ -4,13 +4,15 @@ document.querySelector('input#name').focus();
 
 const otherJobRole = document.querySelector('#other-title');
 
-otherJobRole.style.visibility = "hidden";
+otherJobRole.style.display = "none";
 
 const jobRole = document.querySelector('select#title');
 
 jobRole.addEventListener('change', (e) => {
     if(e.target.value === 'other') {
-        otherJobRole.style.visibility = "visible";
+        otherJobRole.style.display = "inherit";
+    } else {
+        otherJobRole.style.display = "none";
     }
 });
 
@@ -95,4 +97,35 @@ activitiesField.addEventListener('click', (event) => {
         }
         calcTotal(totalAmount.dataset.value, event.target.dataset.cost, operator);
     }
+});
+
+const paymentSelect = document.querySelector('select#payment');
+paymentSelect.querySelector('option[value="select method"]').hidden = true;
+paymentSelect.querySelector('option[value="credit card"]').selected = true;
+selectPayment("credit card");
+
+function selectPayment(payment){
+    const paymentField = paymentSelect.parentNode;
+    const creditCard = paymentField.querySelector('#credit-card');
+    const paypal = paymentField.querySelector('#paypal');
+    const bitcoin = paymentField.querySelector('#bitcoin');
+
+    if (payment === "credit card") {
+        paypal.style.display = "none";
+        bitcoin.style.display = "none";
+        creditCard.style.display = "inherit";
+    } else{
+        paymentField.querySelector('#credit-card').style.display = "none";
+        if (payment === "paypal") {
+            bitcoin.style.display = "none";
+            paypal.style.display = "inherit";
+        } else {
+            paypal.style.display = "none";
+            bitcoin.style.display = "inherit";
+        }
+    } 
+}
+
+paymentSelect.addEventListener('change', (event) => {
+    selectPayment(event.target.value);
 });
