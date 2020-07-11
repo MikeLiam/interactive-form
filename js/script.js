@@ -138,6 +138,21 @@ const creditNumber = document.querySelector('input#cc-num');
 const creditZip = document.querySelector('input#zip');
 const creditCvv = document.querySelector('input#cvv');
 
+function createSpan(text, inputElement) {
+    const element = document.createElement('span');
+    element.textContent = text;
+    element.style.display = 'none';
+    inputElement.parentNode.insertBefore(element, inputElement.nextElementSibling);
+}
+
+createSpan("Name field can't be blank.",nameInput);
+createSpan("Email field must be a validly formatted e-mail address like email@email.com or email@email.org.com",emailInput);
+createSpan("Credit Card field should be number between 13 and 16 digits.",creditNumber);
+createSpan("The Zip Code field should be a 5-digit number.",creditZip);
+createSpan("The CVV should be a 3-digit number.",creditCvv);
+createSpan("At least one actvitiy should be selected.",activitiesField.firstElementChild);
+
+
 function showOrHideTip(show, element) {
     if (show) {
         element.style.display = 'inherit';
@@ -151,7 +166,7 @@ function validation(tester, forTest) {
 }
 
 
-function createListener(tester, reference) {
+function createListener(reference) {
     return event => {
         let input;
         if (event.target === activities) {
@@ -159,16 +174,17 @@ function createListener(tester, reference) {
         } else {
             input = event.target.value;
         }
-        const valid = tester(reference, input);
-        const showTip = input != '' && valid;
+        const valid = validation(reference, input);
+        const showTip = !valid;
         const toolTip = event.target.nextElementSibling;
         showOrHideTip(showTip, toolTip);
     };
 }
 
-nameInput.addEventListener('input', createListener(validation, /^[a-z]{1,}$/i));
-emailInput.addEventListener('input', createListener(validation, /^[^@]+\@[^@]+(\.[a-z]{3})?\.[a-z]{3}?$/i));
-creditNumber.addEventListener('input', createListener(validation, /^\d{13,16}$/));
-creditZip.addEventListener('input', createListener(validation, /^\d{5}$/));
-creditCvv.addEventListener('input', createListener(validation, /^\d{3}$/));
-activities.addEventListener('input', createListener(validation, /^\$\d{1,}$/));
+nameInput.addEventListener('input', createListener(/^[a-z]{1,}$/i));
+emailInput.addEventListener('input', createListener(/^[^@]+\@[^@]+(\.[a-z]{3})?\.[a-z]{3}?$/i));
+creditNumber.addEventListener('input', createListener(/^\d{13,16}$/));
+creditZip.addEventListener('input', createListener(/^\d{5}$/));
+creditCvv.addEventListener('input', createListener(/^\d{3}$/));
+activitiesField.addEventListener('input', createListener(/^\$\d{1,}$/));
+
