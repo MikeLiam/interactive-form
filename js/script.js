@@ -1,13 +1,14 @@
+
 // When the page first loads, the name text field should be in focus by default.
 
 document.querySelector('input#name').focus();
 
+// Hide input for other job role if JavaScript is active
 const otherJobRole = document.querySelector('#other-title');
-
 otherJobRole.style.display = "none";
 
+// Show input for other job role if other job role is selected
 const jobRole = document.querySelector('select#title');
-
 jobRole.addEventListener('change', (e) => {
     if (e.target.value === 'other') {
         otherJobRole.style.display = "inherit";
@@ -62,9 +63,9 @@ themeSelect.addEventListener('change', (event) => {
     }
 });
 
-const activitiesField = document.querySelector('.activities');
+const activitiesField = document.querySelector('.activities div');
 const activities = activitiesField.querySelectorAll('input');
-const totalAmount = document.createElement('span');
+const totalAmount = document.createElement('p');
 totalAmount.id = 'total';
 totalAmount.textContent = '$0';
 totalAmount.dataset.value = 0;
@@ -148,7 +149,7 @@ function createSpan(typeSpan, inputElement) {
     const element = document.createElement('span');
     element.className = typeSpan;
     element.style.display = 'none';
-    inputElement.parentNode.insertBefore(element, inputElement.nextElementSibling);
+    inputElement.parentNode.appendChild(element);
 }
 
 createSpan('js-info-span', nameInput);
@@ -156,7 +157,7 @@ createSpan('js-info-span', emailInput);
 createSpan('js-info-span', creditNumber);
 createSpan('js-info-span', creditZip);
 createSpan('js-info-span', creditCvv);
-createSpan('js-activities-span', activitiesField.firstElementChild);
+createSpan('js-activities-span', activitiesField.querySelector('p#total'));
 
 function validation(forTest, tester) {
     return tester.test(forTest) && forTest != '';
@@ -166,14 +167,17 @@ function showInfo(message, element) {
     console.log(element);
     if (message === '') {
         element.style.display = 'none';
-        element.previousElementSibling.style.border = 'green solid';
+        if (element.previousElementSibling.tagName === 'INPUT') {
+            element.previousElementSibling.style.border = 'green solid';
+        }
         element.classList.remove('error');
     } else {
         element.style.display = 'inherit';
         element.classList.add('error');
         element.textContent = message;
-        element.previousElementSibling.style.border = 'red solid';
-
+        if (element.previousElementSibling.tagName === 'INPUT') {
+            element.previousElementSibling.style.border = 'red solid';
+        }
     }
 }
 
@@ -182,14 +186,7 @@ function createListener(reference, label, message) {
         let input;
         let element = event.target.nextElementSibling;
 
-        if (event.target.parentNode.parentNode === activitiesField) {
-            input = activitiesField.querySelector('#total').dataset.value;
-            console.log(input);
-            element = activitiesField.querySelector('span.js-info-span');
-            console.log(element);
-        } else {
-            input = event.target.value;
-        }
+        input = event.target.value;
 
         const valid = validation(input, reference);
 
@@ -204,9 +201,9 @@ function createListener(reference, label, message) {
     };
 }
 
-nameInput.addEventListener('input', createListener(/^[a-z]{1,}$/i, 'name', "Name field can't be blank."));
+nameInput.addEventListener('input', createListener(/^[a-z]{1,}$/i, 'name', "Only a-z letters permited"));
 emailInput.addEventListener('input', createListener(/^[^@]+\@[^@]+(\.[a-z]{3})?\.[a-z]{3}?$/i, 'e-mail address', 
-"Email field must be a validly formatted e-mail address like email@email.com or email@email.org.com"));
+"Should be a validly formatted e-mail address"));
 creditNumber.addEventListener('input', createListener(/^\d{13,16}$/, 'credit card number',
 "Credit Card should be number between 13 and 16 digits." ));
 creditZip.addEventListener('input', createListener(/^\d{5}$/, 'Zip Code number', 
