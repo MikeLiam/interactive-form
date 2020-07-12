@@ -204,7 +204,6 @@ function validation(forTest, tester) {
  * @param {HTML element} element 
  */
 function showInfo(message, element) {
-    console.log(element);
     if (message === '') {
         element.style.display = 'none';
         if (element.previousElementSibling.tagName === 'INPUT') {
@@ -241,7 +240,6 @@ function createListener(reference, label, message) {
         if (input.length === 0) {
             showInfo(`Please enter a ${label}.`, element);
         } else if (!valid) {
-            console.log(event.target);
             showInfo(message, element);
         } else {
             showInfo('', element);
@@ -296,7 +294,6 @@ function validateErrors() {
         } else if (spanElements[i].previousElementSibling.value === '') {
             // Empty inputs test module
                 showInfo('Please fill this field', spanElements[i]);
-                console.log(spanElements[i]);
                 noError = false;
         }
     }
