@@ -184,32 +184,24 @@ option {
 	position: relative;
 }
 
-.credit-card span{
-	top: 90%;
-	width: auto;
-}
-
-.credit-card span::after {
-	top: 0%;
-	border-bottom-color: #2F558E;
-	border-top: 0px;
-	margin-top:-8px;
-}
-
+/* 	Span and span:after styles 
+from www.treehouse.com worskspace 41530198
+modified 
+*/
 span {
 	border-radius: 5px;
 	display: none;
 	font-size: 0.9em;
 	text-align: center;
 	position: absolute;
-	background: #2F558E;
+	background: #ac313b;
 	right: 0%;
 	top: -12px;
 	width: auto;
 	max-width: 85%;
 	padding: 5px 5px;
 	color: #fff;
-  }
+}
 
 span:after {
 	left: 50%;
@@ -221,10 +213,22 @@ span:after {
 	position: absolute;
 	pointer-events: none;
 	border-color: rgba(136, 183, 213, 0);
-	border-top-color: #2F558E;
+	border-top-color: #ac313b;
 	border-width: 8px;
 	margin-bottom: -8px;
-  }
+}
+
+.credit-card span{
+	top: 90%;
+	width: auto;
+}
+
+.credit-card span::after {
+	top: 0%;
+	border-bottom-color: #ac313b;
+	border-top: 0px;
+	margin-top:-8px;
+}
 
 /* ================================= 
   Media Queries
